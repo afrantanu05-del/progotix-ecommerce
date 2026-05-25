@@ -49,9 +49,9 @@ function TrendingCard({ product, rank }) {
             <div className="p-2.5">
                 <p className="line-clamp-2 text-xs font-semibold leading-4 text-gray-800">{product.name}</p>
                 <div className="mt-1.5 flex items-baseline gap-1.5">
-                    <span className="text-sm font-bold text-slate-900">৳{Number(product.price).toLocaleString()}</span>
+                    <span className="text-sm font-bold text-slate-900">${Number(product.price).toFixed(2)}</span>
                     {discount > 0 && (
-                        <span className="text-[10px] text-gray-400 line-through">৳{Number(product.compare_price).toLocaleString()}</span>
+                        <span className="text-[10px] text-gray-400 line-through">${Number(product.compare_price).toFixed(2)}</span>
                     )}
                 </div>
                 {stock > 0 && (

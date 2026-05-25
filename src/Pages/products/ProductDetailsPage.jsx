@@ -15,7 +15,7 @@ import ProductVariants from '@/Components/Storefront/ProductVariants';
 import SocialShare from '@/Components/Storefront/SocialShare';
 
 function money(value) {
-    return '৳' + Number(value ?? 0).toLocaleString();
+    return `$${Number(value ?? 0).toFixed(2)}`;
 }
 
 export default function ProductDetailsPage({ productId }) {
@@ -158,7 +158,7 @@ export default function ProductDetailsPage({ productId }) {
                                 <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-white/10" />
                                 <div className="relative flex items-center gap-2">
                                     <span className="text-lg">&#10004;</span>
-                                    কার্টে যোগ করা হয়েছে
+                                    Added to Cart
                                 </div>
                             </div>
                         )}
@@ -190,7 +190,7 @@ export default function ProductDetailsPage({ productId }) {
                                 )}
                                 {discount > 0 && (
                                     <span className="mb-0.5 rounded-full bg-red-50 px-2 py-0.5 text-xs font-black text-red-600">
-                                        {discount}% ছাড়
+                                        {discount}% OFF
                                     </span>
                                 )}
                             </div>
@@ -204,79 +204,79 @@ export default function ProductDetailsPage({ productId }) {
                                         : 'bg-red-50 text-red-700'
                             }`}>
                                 {stock > 5
-                                    ? `✓ স্টকে আছে (${stock}টি)`
+                                    ? `✓ In Stock (${stock})`
                                     : stock > 0
-                                        ? `⚠ মাত্র ${stock}টি বাকি!`
-                                        : '✗ স্টক শেষ'}
+                                        ? `⚠ Only ${stock} left!`
+                                        : '✗ Out of Stock'}
                             </div>
 
                             {/* Sold count */}
                             {Number(product.sold_count ?? 0) > 0 && (
                                 <p className="mt-2 text-xs font-semibold text-slate-400">
-                                    {product.sold_count}+ বিক্রি হয়েছে
+                                    {product.sold_count}+ sold
                                 </p>
                             )}
                         </div>
 
                         {/* Delivery Info */}
                         <div className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
-                            <h2 className="text-base font-black text-slate-950">ডেলিভারি তথ্য</h2>
+                            <h2 className="text-base font-black text-slate-950">Delivery Info</h2>
                             <div className="mt-3 space-y-2">
                                 <div className="flex items-center gap-3 text-sm">
                                     <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-orange-50 text-orange-600">
                                         <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
                                     </span>
                                     <div>
-                                        <p className="font-bold text-slate-800">ঢাকায় ১-২ দিনে ডেলিভারি</p>
-                                        <p className="text-xs text-slate-400">ঢাকার বাইরে ৩-৫ দিন</p>
+                                        <p className="font-bold text-slate-800">Delivery in 1-2 days (local)</p>
+                                        <p className="text-xs text-slate-400">3-5 days for other areas</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-3 text-sm">
                                     <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-emerald-50 text-emerald-600">
                                         <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                                     </span>
-                                    <p className="font-bold text-slate-800">ক্যাশ অন ডেলিভারি</p>
+                                    <p className="font-bold text-slate-800">Cash on Delivery</p>
                                 </div>
                                 <div className="flex items-center gap-3 text-sm">
                                     <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-blue-50 text-blue-600">
                                         <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 4H3a2 2 0 00-2 2v12a2 2 0 002 2h18a2 2 0 002-2V6a2 2 0 00-2-2z"/><path d="M1 10h22"/></svg>
                                     </span>
-                                    <p className="font-bold text-slate-800">৭ দিনে রিটার্ন পলিসি</p>
+                                    <p className="font-bold text-slate-800">7-day Return Policy</p>
                                 </div>
                             </div>
                         </div>
 
                         {/* Description */}
                         <div className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
-                            <h2 className="text-base font-black text-slate-950">বিবরণ</h2>
+                            <h2 className="text-base font-black text-slate-950">Description</h2>
                             <p className="mt-2 text-sm font-medium leading-6 text-slate-600">{product.description}</p>
                         </div>
 
                         {/* Variant Selector */}
                         <div className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
-                            <h2 className="text-base font-black text-slate-950">ভ্যারিয়েন্ট নির্বাচন</h2>
+                            <h2 className="text-base font-black text-slate-950">Select Variant</h2>
                             <ProductVariants onVariantChange={setSelectedVariant} />
                         </div>
 
                         {/* Product Details Table */}
                         <div className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
-                            <h2 className="text-base font-black text-slate-950">পণ্যের বিবরণ</h2>
+                            <h2 className="text-base font-black text-slate-950">Product Details</h2>
                             <div className="mt-3 space-y-2 text-sm">
                                 <div className="flex justify-between">
-                                    <span className="font-semibold text-slate-500">ক্যাটাগরি</span>
+                                    <span className="font-semibold text-slate-500">Category</span>
                                     <span className="font-black text-slate-950">{product.category || 'Featured'}</span>
                                 </div>
                                 <div className="flex justify-between">
-                                    <span className="font-semibold text-slate-500">রেটিং</span>
+                                    <span className="font-semibold text-slate-500">Rating</span>
                                     <div className="flex items-center gap-1">
                                         <StarRating rating={Number(product.rating ?? 0)} size="xs" />
                                         <span className="font-black text-slate-950">({product.reviews_count ?? 0})</span>
                                     </div>
                                 </div>
                                 <div className="flex justify-between">
-                                    <span className="font-semibold text-slate-500">স্টক</span>
+                                    <span className="font-semibold text-slate-500">Stock</span>
                                     <span className={`font-black ${stock > 0 ? 'text-emerald-600' : 'text-red-600'}`}>
-                                        {stock > 0 ? `${stock}টি আছে` : 'স্টক শেষ'}
+                                        {stock > 0 ? `${stock} available` : 'Out of Stock'}
                                     </span>
                                 </div>
                             </div>
@@ -288,7 +288,7 @@ export default function ProductDetailsPage({ productId }) {
 
                         {recommendations.length > 0 && (
                             <div className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
-                                <h2 className="text-base font-black text-slate-950">আপনি পছন্দ করতে পারেন</h2>
+                                <h2 className="text-base font-black text-slate-950">You May Also Like</h2>
                                 <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
                                     {recommendations.map((recProduct) => (
                                         <ProductCard key={recProduct.id} product={recProduct} />
@@ -330,7 +330,7 @@ export default function ProductDetailsPage({ productId }) {
                                 onClick={handleAdd}
                                 className="h-11 flex-1 rounded-xl bg-orange-600 text-sm font-black text-white shadow-lg shadow-orange-200 transition-all duration-200 hover:bg-orange-700 active:scale-95 disabled:bg-slate-300 disabled:shadow-none"
                             >
-                                {stock <= 0 ? 'স্টক শেষ' : 'কার্টে যোগ করুন'}
+                                {stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
                             </button>
                         </div>
                     </div>

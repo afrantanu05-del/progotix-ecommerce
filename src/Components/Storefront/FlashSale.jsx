@@ -62,8 +62,8 @@ function FlashProductCard({ product }) {
                 <div className="p-2">
                     <p className="line-clamp-1 text-xs font-medium text-gray-800">{product.name}</p>
                     <div className="mt-1 flex items-baseline gap-1.5">
-                        <span className="text-sm font-bold text-orange-600">৳{Number(product.price).toLocaleString()}</span>
-                        <span className="text-[10px] text-gray-400 line-through">৳{Number(originalPrice).toLocaleString()}</span>
+                        <span className="text-sm font-bold text-orange-600">${Number(product.price).toFixed(2)}</span>
+                        <span className="text-[10px] text-gray-400 line-through">${Number(originalPrice).toFixed(2)}</span>
                     </div>
                     <div className="mt-1.5">
                         <div className="h-1.5 overflow-hidden rounded-full bg-gray-100">
@@ -104,7 +104,7 @@ export default function FlashSale({ products = [] }) {
                     </div>
                 </div>
                 <Link href="/flash-sale" className="text-xs font-semibold text-orange-500">
-                    সব দেখুন →
+                    View All →
                 </Link>
             </div>
             <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">

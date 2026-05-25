@@ -7,7 +7,7 @@ import StarRating from './StarRating';
 import QuickViewModal from './QuickViewModal';
 
 function money(value) {
-    return `৳${Number(value ?? 0).toLocaleString()}`;
+    return `$${Number(value ?? 0).toFixed(2)}`;
 }
 
 export default function ProductCard({ product }) {

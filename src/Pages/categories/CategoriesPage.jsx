@@ -21,7 +21,7 @@ const categoryMeta = {
 const defaultMeta = { icon: '📦', gradient: 'from-slate-400 to-slate-500', bg: 'bg-slate-50' };
 
 function money(value) {
-    return '৳' + Number(value ?? 0).toLocaleString();
+    return `$${Number(value ?? 0).toFixed(2)}`;
 }
 
 export default function CategoriesPage() {
@@ -65,16 +65,16 @@ export default function CategoriesPage() {
 
     return (
         <MobileShell title="Categories">
-            <Head title="ক্যাটাগরি" />
+            <Head title="Categories" />
             <section className="space-y-4 px-4 py-4">
                 {/* Header */}
                 <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-500 via-rose-500 to-fuchsia-600 p-5 text-white shadow-xl shadow-orange-200">
                     <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/10" />
                     <div className="absolute -right-4 bottom-0 h-24 w-24 rounded-full bg-white/10" />
                     <div className="relative">
-                        <h1 className="text-2xl font-black">ক্যাটাগরি</h1>
+                        <h1 className="text-2xl font-black">Categories</h1>
                         <p className="mt-1 text-sm font-semibold text-white/90">
-                            {categoriesWithCount.length}টি ক্যাটাগরিতে পণ্য খুঁজুন
+                            Find products across {categoriesWithCount.length} categories
                         </p>
                     </div>
                 </div>
@@ -95,7 +95,7 @@ export default function CategoriesPage() {
                                     {cat.icon}
                                 </div>
                                 <p className="mt-3 text-center text-sm font-black text-slate-800 group-hover:text-orange-600">{cat.name}</p>
-                                <p className="mt-0.5 text-center text-xs font-semibold text-slate-400">{cat.count}টি পণ্য</p>
+                                <p className="mt-0.5 text-center text-xs font-semibold text-slate-400">{cat.count} product{cat.count !== 1 ? 's' : ''}</p>
                             </button>
                         ))}
                     </div>
@@ -111,17 +111,17 @@ export default function CategoriesPage() {
                             </div>
                             <div className="flex-1">
                                 <p className="text-sm font-black text-slate-900">{activeCategory}</p>
-                                <p className="text-xs font-semibold text-slate-500">{filteredProducts.length}টি পণ্য</p>
+                                <p className="text-xs font-semibold text-slate-500">{filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''}</p>
                             </div>
                         </div>
 
                         {/* Sort Options */}
                         <div className="flex gap-2 overflow-x-auto scrollbar-hide">
                             {[
-                                { value: 'default', label: 'ডিফল্ট' },
-                                { value: 'price-low', label: 'কম দাম' },
-                                { value: 'price-high', label: 'বেশি দাম' },
-                                { value: 'rating', label: 'সেরা রেটিং' },
+                                { value: 'default', label: 'Default' },
+                                { value: 'price-low', label: 'Low Price' },
+                                { value: 'price-high', label: 'High Price' },
+                                { value: 'rating', label: 'Top Rating' },
                             ].map((opt) => (
                                 <button
                                     key={opt.value}
@@ -144,9 +144,9 @@ export default function CategoriesPage() {
                                 <div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-slate-200 text-3xl">
                                     {activeMeta.icon}
                                 </div>
-                                <h2 className="mt-4 text-lg font-black text-slate-950">এই ক্যাটাগরিতে পণ্য নেই</h2>
+                                <h2 className="mt-4 text-lg font-black text-slate-950">No products in this category</h2>
                                 <button type="button" onClick={() => setActiveCategory(null)} className="mt-4 rounded-2xl bg-orange-600 px-5 py-2.5 text-sm font-black text-white transition-all hover:bg-orange-700 active:scale-95">
-                                    সব ক্যাটাগরি দেখুন
+                                    View All Categories
                                 </button>
                             </div>
                         ) : (

@@ -6,14 +6,14 @@ import { useCoupon } from '@/Contexts/CouponContext';
 import { useToast } from '@/Contexts/ToastContext';
 
 function money(value) {
-    return '৳' + Number(value ?? 0).toLocaleString();
+    return `$${Number(value ?? 0).toFixed(2)}`;
 }
 
 const STEPS = [
-    { id: 1, label: 'যোগাযোগ', icon: '👤' },
-    { id: 2, label: 'শিপিং', icon: '📦' },
-    { id: 3, label: 'পেমেন্ট', icon: '💳' },
-    { id: 4, label: 'রিভিউ', icon: '✓' },
+    { id: 1, label: 'Contact', icon: '👤' },
+    { id: 2, label: 'Shipping', icon: '📦' },
+    { id: 3, label: 'Payment', icon: '💳' },
+    { id: 4, label: 'Review', icon: '✓' },
 ];
 
 function StepIndicator({ currentStep }) {
@@ -90,13 +90,13 @@ export default function CheckoutPage() {
     const total = subtotal + delivery - discount + giftWrapFee;
 
     const availablePaymentMethods = [
-        { id: 'cod', label: 'ক্যাশ অন ডেলিভারি', icon: '💵', enabled: paymentSettings.cod_enabled },
+        { id: 'cod', label: 'Cash on Delivery', icon: '💵', enabled: paymentSettings.cod_enabled },
         { id: 'bkash', label: 'bKash', icon: '📱', enabled: true },
         { id: 'nagad', label: 'Nagad', icon: '📲', enabled: true },
-        { id: 'stripe', label: 'কার্ড পেমেন্ট', icon: '💳', enabled: paymentSettings.stripe_enabled },
+        { id: 'stripe', label: 'Card Payment', icon: '💳', enabled: paymentSettings.stripe_enabled },
     ].filter(method => method.enabled);
 
-    const enabledPaymentMethods = availablePaymentMethods.length > 0 ? availablePaymentMethods : [{ id: 'cod', label: 'ক্যাশ অন ডেলিভারি', icon: '💵', enabled: true }];
+    const enabledPaymentMethods = availablePaymentMethods.length > 0 ? availablePaymentMethods : [{ id: 'cod', label: 'Cash on Delivery', icon: '💵', enabled: true }];
 
     useEffect(() => {
         if (!enabledPaymentMethods.find(m => m.id === form.paymentMethod)) {
@@ -111,12 +111,12 @@ export default function CheckoutPage() {
     const validateStep = (stepNum) => {
         const newErrors = {};
         if (stepNum === 1) {
-            if (!form.name.trim()) newErrors.name = 'নাম দিন';
-            if (!form.phone.trim()) newErrors.phone = 'ফোন নম্বর দিন';
-            if (!form.email.trim()) newErrors.email = 'ইমেইল দিন';
+            if (!form.name.trim()) newErrors.name = 'Name is required';
+            if (!form.phone.trim()) newErrors.phone = 'Phone number is required';
+            if (!form.email.trim()) newErrors.email = 'Email is required';
         } else if (stepNum === 2) {
-            if (!form.shippingAddress.trim()) newErrors.shippingAddress = 'ঠিকানা দিন';
-            if (!form.shippingCity.trim()) newErrors.shippingCity = 'শহর দিন';
+            if (!form.shippingAddress.trim()) newErrors.shippingAddress = 'Address is required';
+            if (!form.shippingCity.trim()) newErrors.shippingCity = 'City is required';
         }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -174,7 +174,7 @@ export default function CheckoutPage() {
                 onError: setErrors,
                 onSuccess: (payload) => {
                     clearCart();
-                    addToast('অর্ডার সফলভাবে প্লেস হয়েছে!', 'success');
+                    addToast('Order placed successfully!', 'success');
                     if (payload?.checkout_url) {
                         window.location.href = payload.checkout_url;
                     }
@@ -198,9 +198,9 @@ export default function CheckoutPage() {
                     <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/10" />
                     <div className="absolute -right-4 bottom-0 h-24 w-24 rounded-full bg-white/10" />
                     <div className="relative">
-                        <h1 className="text-2xl font-black">চেকআউট</h1>
+                        <h1 className="text-2xl font-black">Checkout</h1>
                         <p className="mt-1 text-sm font-semibold text-white/90">
-                            {user ? 'আপনার অর্ডার সম্পন্ন করুন' : 'গেস্ট চেকআউট'}
+                            {user ? 'Complete your order' : 'Guest Checkout'}
                         </p>
                     </div>
                 </div>
@@ -214,9 +214,9 @@ export default function CheckoutPage() {
                                 <circle cx="20" cy="21" r="1" stroke="currentColor" strokeWidth="1.8" fill="currentColor"/>
                             </svg>
                         </div>
-                        <h2 className="mt-5 text-xl font-black text-slate-950">কার্ট খালি</h2>
+                        <h2 className="mt-5 text-xl font-black text-slate-950">Cart is empty</h2>
                         <Link href="/" className="mt-6 inline-flex rounded-2xl bg-orange-600 px-6 py-3 text-sm font-black text-white shadow-lg shadow-orange-200 transition-all duration-200 hover:bg-orange-700 active:scale-95">
-                            শপিং করুন
+                            Shop Now
                         </Link>
                     </div>
                 ) : (
@@ -231,20 +231,20 @@ export default function CheckoutPage() {
                             {step === 1 && (
                                 <div className="space-y-4">
                                     <div className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
-                                        <h2 className="text-lg font-black text-slate-950">যোগাযোগ তথ্য</h2>
+                                        <h2 className="text-lg font-black text-slate-950">Contact Information</h2>
                                         <div className="mt-4 space-y-3">
                                             <div>
-                                                <label className="mb-2 block text-xs font-bold text-slate-600">পুরো নাম *</label>
+                                                <label className="mb-2 block text-xs font-bold text-slate-600">Full Name *</label>
                                                 <input
                                                     value={form.name}
                                                     onChange={(e) => updateField('name', e.target.value)}
                                                     className={inputClass}
-                                                    placeholder="আপনার পুরো নাম"
+                                                    placeholder="Your full name"
                                                 />
                                                 {errors.name && <p className="mt-1 text-xs font-bold text-red-600">{errors.name}</p>}
                                             </div>
                                             <div>
-                                                <label className="mb-2 block text-xs font-bold text-slate-600">ফোন নম্বর *</label>
+                                                <label className="mb-2 block text-xs font-bold text-slate-600">Phone Number *</label>
                                                 <input
                                                     type="tel"
                                                     value={form.phone}
@@ -255,7 +255,7 @@ export default function CheckoutPage() {
                                                 {errors.phone && <p className="mt-1 text-xs font-bold text-red-600">{errors.phone}</p>}
                                             </div>
                                             <div>
-                                                <label className="mb-2 block text-xs font-bold text-slate-600">ইমেইল *</label>
+                                                <label className="mb-2 block text-xs font-bold text-slate-600">Email *</label>
                                                 <input
                                                     type="email"
                                                     value={form.email}
@@ -272,7 +272,7 @@ export default function CheckoutPage() {
                                         onClick={nextStep}
                                         className="h-12 w-full rounded-2xl bg-orange-600 text-sm font-black text-white shadow-lg shadow-orange-200 transition-all duration-200 hover:bg-orange-700 active:scale-95"
                                     >
-                                        পরবর্তী: শিপিং ঠিকানা →
+                                        Next: Shipping Address →
                                     </button>
                                 </div>
                             )}
@@ -281,36 +281,36 @@ export default function CheckoutPage() {
                             {step === 2 && (
                                 <div className="space-y-4">
                                     <div className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
-                                        <h2 className="text-lg font-black text-slate-950">শিপিং ঠিকানা</h2>
+                                        <h2 className="text-lg font-black text-slate-950">Shipping Address</h2>
                                         <div className="mt-4 space-y-3">
                                             <div>
-                                                <label className="mb-2 block text-xs font-bold text-slate-600">ঠিকানা *</label>
+                                                <label className="mb-2 block text-xs font-bold text-slate-600">Address *</label>
                                                 <textarea
                                                     value={form.shippingAddress}
                                                     onChange={(e) => updateField('shippingAddress', e.target.value)}
                                                     className="min-h-20 w-full rounded-2xl border-slate-200 px-4 py-3 text-sm font-semibold focus:border-orange-500 focus:ring-orange-500"
-                                                    placeholder="বাড়ি, রাস্তা, ল্যান্ডমার্ক"
+                                                    placeholder="House, street, landmark"
                                                 />
                                                 {errors.shippingAddress && <p className="mt-1 text-xs font-bold text-red-600">{errors.shippingAddress}</p>}
                                             </div>
                                             <div className="grid grid-cols-2 gap-3">
                                                 <div>
-                                                    <label className="mb-2 block text-xs font-bold text-slate-600">শহর *</label>
-                                                    <input value={form.shippingCity} onChange={(e) => updateField('shippingCity', e.target.value)} className={inputClass} placeholder="ঢাকা" />
+                                                    <label className="mb-2 block text-xs font-bold text-slate-600">City *</label>
+                                                    <input value={form.shippingCity} onChange={(e) => updateField('shippingCity', e.target.value)} className={inputClass} placeholder="Dhaka" />
                                                     {errors.shippingCity && <p className="mt-1 text-xs font-bold text-red-600">{errors.shippingCity}</p>}
                                                 </div>
                                                 <div>
-                                                    <label className="mb-2 block text-xs font-bold text-slate-600">এলাকা</label>
-                                                    <input value={form.shippingArea} onChange={(e) => updateField('shippingArea', e.target.value)} className={inputClass} placeholder="মিরপুর" />
+                                                    <label className="mb-2 block text-xs font-bold text-slate-600">Area</label>
+                                                    <input value={form.shippingArea} onChange={(e) => updateField('shippingArea', e.target.value)} className={inputClass} placeholder="Mirpur" />
                                                 </div>
                                             </div>
                                             <div className="grid grid-cols-2 gap-3">
                                                 <div>
-                                                    <label className="mb-2 block text-xs font-bold text-slate-600">পোস্টকোড</label>
+                                                    <label className="mb-2 block text-xs font-bold text-slate-600">Postcode</label>
                                                     <input value={form.shippingPostcode} onChange={(e) => updateField('shippingPostcode', e.target.value)} className={inputClass} placeholder="1216" />
                                                 </div>
                                                 <div>
-                                                    <label className="mb-2 block text-xs font-bold text-slate-600">দেশ</label>
+                                                    <label className="mb-2 block text-xs font-bold text-slate-600">Country</label>
                                                     <input value={form.shippingCountry} onChange={(e) => updateField('shippingCountry', e.target.value)} className={inputClass} placeholder="Bangladesh" />
                                                 </div>
                                             </div>
@@ -322,38 +322,38 @@ export default function CheckoutPage() {
                                                         onChange={(e) => updateField('billingSameAsShipping', e.target.checked)}
                                                         className="h-4 w-4 rounded border-slate-300 text-orange-600 focus:ring-orange-500"
                                                     />
-                                                    বিলিং ঠিকানা শিপিং-এর মতো
+                                                    Billing address same as shipping
                                                 </label>
                                             </div>
                                             {!form.billingSameAsShipping && (
                                                 <div className="space-y-3 border-t border-slate-200 pt-3">
-                                                    <h3 className="text-sm font-black text-slate-700">বিলিং ঠিকানা</h3>
-                                                    <input value={form.billingName} onChange={(e) => updateField('billingName', e.target.value)} className={inputClass} placeholder="বিলিং নাম" />
-                                                    <input value={form.billingPhone} onChange={(e) => updateField('billingPhone', e.target.value)} className={inputClass} placeholder="বিলিং ফোন" />
-                                                    <textarea value={form.billingAddress} onChange={(e) => updateField('billingAddress', e.target.value)} className="min-h-20 w-full rounded-2xl border-slate-200 px-4 py-3 text-sm font-semibold focus:border-orange-500 focus:ring-orange-500" placeholder="বিলিং ঠিকানা" />
+                                                    <h3 className="text-sm font-black text-slate-700">Billing Address</h3>
+                                                    <input value={form.billingName} onChange={(e) => updateField('billingName', e.target.value)} className={inputClass} placeholder="Billing name" />
+                                                    <input value={form.billingPhone} onChange={(e) => updateField('billingPhone', e.target.value)} className={inputClass} placeholder="Billing phone" />
+                                                    <textarea value={form.billingAddress} onChange={(e) => updateField('billingAddress', e.target.value)} className="min-h-20 w-full rounded-2xl border-slate-200 px-4 py-3 text-sm font-semibold focus:border-orange-500 focus:ring-orange-500" placeholder="Billing address" />
                                                     <div className="grid grid-cols-2 gap-3">
-                                                        <input value={form.billingCity} onChange={(e) => updateField('billingCity', e.target.value)} className={inputClass} placeholder="শহর" />
-                                                        <input value={form.billingArea} onChange={(e) => updateField('billingArea', e.target.value)} className={inputClass} placeholder="এলাকা" />
+                                                        <input value={form.billingCity} onChange={(e) => updateField('billingCity', e.target.value)} className={inputClass} placeholder="City" />
+                                                        <input value={form.billingArea} onChange={(e) => updateField('billingArea', e.target.value)} className={inputClass} placeholder="Area" />
                                                     </div>
                                                 </div>
                                             )}
                                             <div>
-                                                <label className="mb-2 block text-xs font-bold text-slate-600">অর্ডার নোট (ঐচ্ছিক)</label>
+                                                <label className="mb-2 block text-xs font-bold text-slate-600">Order Note (optional)</label>
                                                 <textarea
                                                     value={form.customerNote}
                                                     onChange={(e) => updateField('customerNote', e.target.value)}
                                                     className="min-h-16 w-full rounded-2xl border-slate-200 px-4 py-3 text-sm font-semibold focus:border-orange-500 focus:ring-orange-500"
-                                                    placeholder="ডেলিভারি নির্দেশনা"
+                                                    placeholder="Delivery instructions"
                                                 />
                                             </div>
                                         </div>
                                     </div>
                                     <div className="flex gap-3">
                                         <button type="button" onClick={prevStep} className="h-12 flex-1 rounded-2xl bg-slate-100 text-sm font-black text-slate-700 transition-all duration-200 hover:bg-slate-200 active:scale-95">
-                                            ← আগের
+                                            ← Previous
                                         </button>
                                         <button type="button" onClick={nextStep} className="h-12 flex-[2] rounded-2xl bg-orange-600 text-sm font-black text-white shadow-lg shadow-orange-200 transition-all duration-200 hover:bg-orange-700 active:scale-95">
-                                            পরবর্তী: পেমেন্ট →
+                                            Next: Payment →
                                         </button>
                                     </div>
                                 </div>
@@ -363,7 +363,7 @@ export default function CheckoutPage() {
                             {step === 3 && (
                                 <div className="space-y-4">
                                     <div className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
-                                        <h2 className="text-lg font-black text-slate-950">পেমেন্ট মেথড</h2>
+                                        <h2 className="text-lg font-black text-slate-950">Payment Method</h2>
                                         <div className="mt-4 space-y-2">
                                             {enabledPaymentMethods.map((method) => (
                                                 <button
@@ -395,7 +395,7 @@ export default function CheckoutPage() {
                                                 onChange={(e) => updateField('giftWrap', e.target.checked)}
                                                 className="h-4 w-4 rounded border-slate-300 text-purple-600 focus:ring-purple-500"
                                             />
-                                            🎁 গিফট র‍্যাপ (+{money(50)})
+                                            🎁 Gift Wrap (+{money(50)})
                                         </label>
                                         {form.giftWrap && (
                                             <div className="mt-3">
@@ -403,7 +403,7 @@ export default function CheckoutPage() {
                                                     value={form.giftMessage}
                                                     onChange={(e) => updateField('giftMessage', e.target.value)}
                                                     className="min-h-16 w-full rounded-xl border-slate-200 px-3 py-2 text-sm font-semibold focus:border-purple-500 focus:ring-purple-500"
-                                                    placeholder="গিফট মেসেজ লিখুন..."
+                                                    placeholder="Write a gift message..."
                                                     maxLength={200}
                                                 />
                                                 <p className="mt-1 text-xs font-semibold text-slate-400">{form.giftMessage.length}/200</p>
@@ -420,16 +420,16 @@ export default function CheckoutPage() {
                                             className="h-4 w-4 rounded border-slate-300 text-orange-600 focus:ring-orange-500"
                                         />
                                         <label htmlFor="saveInfo" className="text-sm font-semibold text-slate-700">
-                                            পরবর্তী সময়ের জন্য তথ্য সংরক্ষণ করুন
+                                            Save info for next time
                                         </label>
                                     </div>
 
                                     <div className="flex gap-3">
                                         <button type="button" onClick={prevStep} className="h-12 flex-1 rounded-2xl bg-slate-100 text-sm font-black text-slate-700 transition-all duration-200 hover:bg-slate-200 active:scale-95">
-                                            ← আগের
+                                            ← Previous
                                         </button>
                                         <button type="button" onClick={nextStep} className="h-12 flex-[2] rounded-2xl bg-orange-600 text-sm font-black text-white shadow-lg shadow-orange-200 transition-all duration-200 hover:bg-orange-700 active:scale-95">
-                                            পরবর্তী: রিভিউ →
+                                            Next: Review →
                                         </button>
                                     </div>
                                 </div>
@@ -441,8 +441,8 @@ export default function CheckoutPage() {
                                     {/* Contact Summary */}
                                     <div className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
                                         <div className="flex items-center justify-between">
-                                            <h2 className="text-base font-black text-slate-950">যোগাযোগ</h2>
-                                            <button type="button" onClick={() => setStep(1)} className="text-xs font-bold text-orange-600">পরিবর্তন</button>
+                                            <h2 className="text-base font-black text-slate-950">Contact</h2>
+                                            <button type="button" onClick={() => setStep(1)} className="text-xs font-bold text-orange-600">Change</button>
                                         </div>
                                         <div className="mt-2 space-y-1 text-sm text-slate-600">
                                             <p className="font-bold">{form.name}</p>
@@ -454,8 +454,8 @@ export default function CheckoutPage() {
                                     {/* Shipping Summary */}
                                     <div className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
                                         <div className="flex items-center justify-between">
-                                            <h2 className="text-base font-black text-slate-950">শিপিং</h2>
-                                            <button type="button" onClick={() => setStep(2)} className="text-xs font-bold text-orange-600">পরিবর্তন</button>
+                                            <h2 className="text-base font-black text-slate-950">Shipping</h2>
+                                            <button type="button" onClick={() => setStep(2)} className="text-xs font-bold text-orange-600">Change</button>
                                         </div>
                                         <div className="mt-2 text-sm text-slate-600">
                                             <p>{form.shippingAddress}</p>
@@ -467,8 +467,8 @@ export default function CheckoutPage() {
                                     {/* Payment Summary */}
                                     <div className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
                                         <div className="flex items-center justify-between">
-                                            <h2 className="text-base font-black text-slate-950">পেমেন্ট</h2>
-                                            <button type="button" onClick={() => setStep(3)} className="text-xs font-bold text-orange-600">পরিবর্তন</button>
+                                            <h2 className="text-base font-black text-slate-950">Payment</h2>
+                                            <button type="button" onClick={() => setStep(3)} className="text-xs font-bold text-orange-600">Change</button>
                                         </div>
                                         <p className="mt-2 text-sm font-bold text-slate-600">
                                             {enabledPaymentMethods.find(m => m.id === form.paymentMethod)?.icon}{' '}
@@ -478,7 +478,7 @@ export default function CheckoutPage() {
 
                                     {/* Order Summary */}
                                     <div className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
-                                        <h2 className="text-lg font-black text-slate-950">অর্ডার সারাংশ</h2>
+                                        <h2 className="text-lg font-black text-slate-950">Order Summary</h2>
                                         <div className="mt-3 space-y-3">
                                             {items.map((item) => (
                                                 <div key={item.id} className="flex items-center gap-3">
@@ -501,27 +501,27 @@ export default function CheckoutPage() {
                                         </div>
                                         <div className="mt-4 space-y-2 border-t border-dashed border-slate-200 pt-4 text-sm font-bold text-slate-600">
                                             <div className="flex justify-between">
-                                                <span>সাবটোটাল</span>
+                                                <span>Subtotal</span>
                                                 <span>{money(subtotal)}</span>
                                             </div>
                                             <div className="flex justify-between">
-                                                <span>ডেলিভারি</span>
+                                                <span>Delivery</span>
                                                 <span>{money(delivery)}</span>
                                             </div>
                                             {discount > 0 && (
                                                 <div className="flex justify-between text-emerald-600">
-                                                    <span>ডিসকাউন্ট</span>
+                                                    <span>Discount</span>
                                                     <span>-{money(discount)}</span>
                                                 </div>
                                             )}
                                             {giftWrapFee > 0 && (
                                                 <div className="flex justify-between text-purple-600">
-                                                    <span>গিফট র‍্যাপ</span>
+                                                    <span>Gift Wrap</span>
                                                     <span>{money(giftWrapFee)}</span>
                                                 </div>
                                             )}
                                             <div className="flex justify-between border-t border-slate-200 pt-2 text-lg font-black text-slate-950">
-                                                <span>মোট</span>
+                                                <span>Total</span>
                                                 <span className="text-orange-600">{money(total)}</span>
                                             </div>
                                         </div>
@@ -531,14 +531,14 @@ export default function CheckoutPage() {
                                     {!user && (
                                         <div className="rounded-3xl bg-gradient-to-r from-orange-50 to-amber-50 p-4 ring-1 ring-orange-100">
                                             <p className="text-sm font-bold text-orange-700">
-                                                লগইন করলে অর্ডার ট্র্যাক করতে পারবেন
+                                                Login to track your orders
                                             </p>
                                             <div className="mt-3 grid grid-cols-2 gap-3">
                                                 <Link href="/login?redirect=/checkout" className="flex items-center justify-center gap-2 rounded-xl bg-slate-950 px-3 py-2.5 text-xs font-black text-white transition-all duration-200 hover:bg-slate-800 active:scale-95">
-                                                    লগইন
+                                                    Login
                                                 </Link>
                                                 <Link href="/register?redirect=/checkout" className="flex items-center justify-center gap-2 rounded-xl bg-white px-3 py-2.5 text-xs font-black text-orange-600 ring-1 ring-orange-200 transition-all duration-200 hover:bg-orange-50 active:scale-95">
-                                                    রেজিস্টার
+                                                    Register
                                                 </Link>
                                             </div>
                                         </div>
@@ -546,14 +546,14 @@ export default function CheckoutPage() {
 
                                     <div className="flex gap-3">
                                         <button type="button" onClick={prevStep} className="h-12 flex-1 rounded-2xl bg-slate-100 text-sm font-black text-slate-700 transition-all duration-200 hover:bg-slate-200 active:scale-95">
-                                            ← আগের
+                                            ← Previous
                                         </button>
                                         <button
                                             type="submit"
                                             disabled={isSubmitting}
                                             className="h-12 flex-[2] rounded-2xl bg-orange-600 text-sm font-black text-white shadow-lg shadow-orange-200 transition-all duration-200 hover:bg-orange-700 active:scale-95 disabled:bg-slate-300"
                                         >
-                                            {isSubmitting ? 'অর্ডার হচ্ছে...' : 'অর্ডার কনফার্ম করুন'}
+                                            {isSubmitting ? 'Ordering...' : 'Confirm Order'}
                                         </button>
                                     </div>
                                 </div>

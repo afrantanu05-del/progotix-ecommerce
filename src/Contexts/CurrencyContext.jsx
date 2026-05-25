@@ -23,7 +23,19 @@ const CURRENCY_SYMBOLS = {
 };
 
 export const CurrencyProvider = ({ children }) => {
-    const [currency, setCurrency] = useState('USD');
+    const [currency, setCurrencyState] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return localStorage.getItem('progotix_currency') || 'USD';
+        }
+        return 'USD';
+    });
+
+    const setCurrency = useCallback((code) => {
+        setCurrencyState(code);
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('progotix_currency', code);
+        }
+    }, []);
 
     const formatMoney = useCallback((value) => {
         const converted = value * EXCHANGE_RATES[currency];

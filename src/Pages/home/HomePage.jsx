@@ -37,7 +37,7 @@ export default function HomePage({ banners = [] }) {
         },
         {
             title: 'Free Delivery 🚚',
-            subtitle: 'On orders above ৳999',
+            subtitle: 'On orders above $50',
             gradient: 'from-emerald-500 via-teal-500 to-cyan-500',
             cta: 'Order Now',
             link: '/search',

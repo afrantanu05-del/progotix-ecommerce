@@ -7,7 +7,7 @@ import { useCart } from '@/Contexts/CartContext';
 import { getProducts } from '@/services/products';
 
 function money(value) {
-    return '৳' + Number(value ?? 0).toLocaleString();
+    return `$${Number(value ?? 0).toFixed(2)}`;
 }
 
 function getFlashSaleEndTime() {
@@ -73,7 +73,7 @@ function FlashProductCard({ product }) {
                     )}
                     {stock === 0 && (
                         <div className="absolute inset-0 z-10 grid place-items-center bg-black/40">
-                            <span className="rounded-full bg-white px-3 py-1 text-xs font-black text-red-600">স্টক শেষ</span>
+                            <span className="rounded-full bg-white px-3 py-1 text-xs font-black text-red-600">Out of Stock</span>
                         </div>
                     )}
                 </div>
@@ -94,9 +94,9 @@ function FlashProductCard({ product }) {
                         />
                     </div>
                     <div className="mt-1 flex items-center justify-between">
-                        <p className="text-[10px] font-bold text-slate-400">{soldPercent}% বিক্রি</p>
+                        <p className="text-[10px] font-bold text-slate-400">{soldPercent}% sold</p>
                         {stock > 0 && stock <= 5 && (
-                            <p className="text-[10px] font-bold text-amber-600">মাত্র {stock}টি!</p>
+                            <p className="text-[10px] font-bold text-amber-600">Only {stock} left!</p>
                         )}
                     </div>
                 </div>
@@ -112,7 +112,7 @@ function FlashProductCard({ product }) {
                                 : 'bg-orange-600 text-white shadow-sm shadow-orange-200 hover:bg-orange-700'
                     }`}
                 >
-                    {added ? '✓ যোগ হয়েছে' : stock === 0 ? 'স্টক শেষ' : 'কার্টে যোগ করুন'}
+                    {added ? '✓ Added' : stock === 0 ? 'Out of Stock' : 'Add to Cart'}
                 </button>
             </div>
         </div>
@@ -154,7 +154,7 @@ export default function FlashSalePage() {
 
     return (
         <MobileShell title="Flash Sale" showSearch={false}>
-            <Head title="ফ্ল্যাশ সেল" />
+            <Head title="Flash Sale" />
             <section className="space-y-4 px-4 py-4">
                 {/* Flash Sale Header */}
                 <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-red-500 via-orange-500 to-amber-500 p-5 text-white shadow-xl shadow-orange-200">
@@ -162,16 +162,16 @@ export default function FlashSalePage() {
                     <div className="absolute -right-4 bottom-0 h-24 w-24 rounded-full bg-white/10" />
                     <div className="absolute left-4 top-4 animate-pulse text-4xl">⚡</div>
                     <div className="relative ml-10">
-                        <h1 className="text-2xl font-black">ফ্ল্যাশ সেল</h1>
+                        <h1 className="text-2xl font-black">Flash Sale</h1>
                         <p className="mt-1 text-sm font-semibold text-white/90">
-                            আজকের বিশেষ অফার — সীমিত সময়!
+                            Today's special offers — limited time!
                         </p>
                     </div>
                 </div>
 
                 {/* Countdown Timer */}
                 <div className="flex items-center justify-center gap-2 rounded-2xl bg-slate-900 p-4">
-                    <span className="text-sm font-bold text-white/60">শেষ হবে</span>
+                    <span className="text-sm font-bold text-white/60">Ends in</span>
                     <div className="flex items-center gap-1">
                         <span className="grid h-10 w-12 place-items-center rounded-lg bg-white/10 text-lg font-black text-white">
                             {String(hours).padStart(2, '0')}
@@ -185,16 +185,16 @@ export default function FlashSalePage() {
                             {String(seconds).padStart(2, '0')}
                         </span>
                     </div>
-                    <span className="text-sm font-bold text-white/60">পরে</span>
+                    <span className="text-sm font-bold text-white/60">later</span>
                 </div>
 
                 {/* Sort Options */}
                 <div className="flex gap-2 overflow-x-auto scrollbar-hide">
                     {[
-                        { value: 'discount', label: 'সেরা ডিস্কাউন্ট' },
-                        { value: 'price-low', label: 'কম দাম' },
-                        { value: 'price-high', label: 'বেশি দাম' },
-                        { value: 'ending', label: 'শেষ হচ্ছে' },
+                        { value: 'discount', label: 'Best Discount' },
+                        { value: 'price-low', label: 'Low Price' },
+                        { value: 'price-high', label: 'High Price' },
+                        { value: 'ending', label: 'Ending Soon' },
                     ].map((opt) => (
                         <button
                             key={opt.value}
@@ -219,14 +219,14 @@ export default function FlashSalePage() {
                         <div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-orange-100 text-3xl">
                             ⚡
                         </div>
-                        <h2 className="mt-4 text-lg font-black text-slate-950">ফ্ল্যাশ সেলে পণ্য নেই</h2>
+                        <h2 className="mt-4 text-lg font-black text-slate-950">No flash sale products</h2>
                         <Link href="/" className="mt-4 inline-flex rounded-2xl bg-orange-600 px-5 py-2.5 text-sm font-black text-white">
-                            হোমে যান
+                            Go Home
                         </Link>
                     </div>
                 ) : (
                     <>
-                        <p className="text-sm font-bold text-slate-500">{flashProducts.length}টি পণ্য</p>
+                        <p className="text-sm font-bold text-slate-500">{flashProducts.length} products</p>
                         <div className="grid grid-cols-2 gap-3">
                             {flashProducts.map((product) => (
                                 <FlashProductCard key={product.id} product={product} />

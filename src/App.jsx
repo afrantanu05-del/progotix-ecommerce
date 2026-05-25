@@ -10,6 +10,7 @@ import { ToastProvider } from './Contexts/ToastContext';
 import { CouponProvider } from './Contexts/CouponContext';
 import { CurrencyProvider } from './Contexts/CurrencyContext';
 import { SearchHistoryProvider } from './Contexts/SearchHistoryContext';
+import { LanguageProvider } from './Contexts/LanguageContext';
 import { NotificationProvider } from './Contexts/NotificationContext';
 import HomePage from './Pages/home/HomePage';
 import CategoriesPage from './Pages/categories/CategoriesPage';
@@ -94,7 +95,9 @@ function Providers({ children }) {
                   <ToastProvider>
                     <CouponProvider>
                       <CurrencyProvider>
-                        <SearchHistoryProvider>{children}</SearchHistoryProvider>
+                        <LanguageProvider>
+                          <SearchHistoryProvider>{children}</SearchHistoryProvider>
+                        </LanguageProvider>
                       </CurrencyProvider>
                     </CouponProvider>
                   </ToastProvider>
