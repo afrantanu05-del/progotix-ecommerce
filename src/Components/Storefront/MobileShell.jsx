@@ -111,7 +111,7 @@ export default function MobileShell({ children, title = 'Progotix', showSearch =
     return (
         <div className="min-h-screen bg-slate-200 text-slate-950 dark:bg-slate-900 dark:text-slate-50">
             <div className="mx-auto min-h-screen max-w-md bg-slate-50 shadow-2xl shadow-slate-300/60 dark:bg-slate-800 dark:shadow-slate-900/60">
-                <header className="relative top-0 z-30 h-fit bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 py-3 px-4 text-white shadow-2xl shadow-slate-900/20">
+                <header className="relative top-0 z-30 h-fit bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 px-4 text-white shadow-2xl shadow-slate-900/20" style={{ paddingTop: 'calc(var(--safe-top) + 0.75rem)', paddingBottom: '0.75rem' }}>
                     <div className="flex items-center justify-between gap-3">
                         <Link href="/" className="min-w-0 flex items-center gap-2">
                             <div className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-xl">
@@ -157,8 +157,8 @@ export default function MobileShell({ children, title = 'Progotix', showSearch =
                             
                     </div>
 
-                    <div className="mt-1 px-2 py-1">
-                        <span className="text-xs text-white/80">
+                    <div className="mt-0.5 px-2">
+                        <span className="text-[11px] text-white/70">
                             {location
                                 ? `${location.city}, ${location.country}`
                                 : 'Detecting location...'}
@@ -170,8 +170,8 @@ export default function MobileShell({ children, title = 'Progotix', showSearch =
 
 
                 {showSearch && (
-                    <div className="sticky top-0 z-20 w-full">
-                            <form onSubmit={submitSearch} className="flex items-center h-[50px] gap-2 rounded-2xl bg-gray-100 px-3 py-2 text-slate-500 shadow-inner">
+                    <div className="sticky top-0 z-20 w-full px-3 py-2 bg-slate-50 dark:bg-slate-800">
+                            <form onSubmit={submitSearch} className="flex items-center h-[44px] gap-2 rounded-2xl bg-gray-100 px-3 py-2 text-slate-500 shadow-inner">
                                 <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
                                     <path d="m21 21-4.3-4.3m1.3-5.2a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                                 </svg>
@@ -258,9 +258,9 @@ export default function MobileShell({ children, title = 'Progotix', showSearch =
                    
                 
 
-                <main className="pb-24">{children}</main>
+                <main className="pb-28" style={{ paddingBottom: 'calc(var(--safe-bottom) + 5rem)' }}>{children}</main>
 
-                <nav className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-md border-t border-slate-200 bg-white/95 px-2 pb-3 pt-2 shadow-[0_-12px_30px_rgba(15,23,42,0.12)] backdrop-blur">
+                <nav className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-md border-t border-slate-200 bg-white/95 px-2 pt-2 shadow-[0_-12px_30px_rgba(15,23,42,0.12)] backdrop-blur" style={{ paddingBottom: 'calc(var(--safe-bottom) + 0.75rem)' }}>
                     <div className="grid grid-cols-5 gap-1">
                         {navItems.map((item) => {
                             const active = item.match.test(url);

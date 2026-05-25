@@ -161,20 +161,6 @@ export default function HomePage({ banners = [] }) {
                     </div>
                 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 
 
                 <div className="grid grid-cols-4 gap-3">
@@ -233,17 +219,19 @@ export default function HomePage({ banners = [] }) {
                 </div>
 
                 <div className="space-y-3">
-                    <div className="flex items-end justify-between gap-3">
-                        <div>
-                            <h2 className="text-lg font-black text-slate-950">Popular products</h2>
-                            <p className="text-xs font-semibold text-slate-500">
-                                {activeCategory === 'All' ? 'Real products from your Laravel API' : `Showing ${activeCategory} products`}
-                            </p>
-                        </div>
-                        <div className="flex items-center gap-2">
+                    <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h2 className="text-lg font-black text-slate-950">Popular products</h2>
+                                <p className="text-xs font-semibold text-slate-500">
+                                    {activeCategory === 'All' ? 'Real products from your Laravel API' : `Showing ${activeCategory} products`}
+                                </p>
+                            </div>
                             <span className="rounded-full bg-gradient-to-r from-orange-100 to-amber-100 px-2.5 py-1 text-xs font-black text-orange-700 ring-1 ring-orange-200">
                                 {filteredProducts.length} items
                             </span>
+                        </div>
+                        <div className="flex items-center gap-2">
                             <button
                                 type="button"
                                 onClick={() => setShowFilters(!showFilters)}
@@ -256,7 +244,7 @@ export default function HomePage({ banners = [] }) {
                             <select
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value)}
-                                className="h-8 rounded-full border-slate-200 px-3 text-xs font-semibold focus:border-orange-500 focus:ring-orange-500"
+                                className="h-8 flex-1 rounded-full border-slate-200 px-3 text-xs font-semibold focus:border-orange-500 focus:ring-orange-500"
                             >
                                 <option value="default">Sort by</option>
                                 <option value="price-low">Price: Low to High</option>
